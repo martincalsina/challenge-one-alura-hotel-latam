@@ -235,12 +235,13 @@ public class Login extends JFrame {
 	}
 	
 	private void Login() {
-		 String Usuario= "admin";
-	     String Contraseña="admin";
+	        String usuario = "admin";
+	        String contraseña = "admin";
+                
+                String usurioIngresado = new String (txtUsuario.getText());
+	        String contraseñaIngresada =new String (txtContrasena.getPassword());
 
-	        String contrase=new String (txtContrasena.getPassword());
-
-	        if(txtUsuario.getText().equals(Usuario) && contrase.equals(Contraseña)){
+	        if(usurioIngresado.equals(usuario) && contraseñaIngresada.equals(contraseña)){
 	            MenuUsuario menu = new MenuUsuario();
 	            menu.setVisible(true);
 	            dispose();	 
