@@ -31,8 +31,18 @@ public class Huesped {
     private Date fechaNacimiento;
     private String nacionalidad;
     private String telefono;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy="reserva", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Reserva> reservas = new ArrayList<>();
+
+    public Huesped(String nombre, String apellido, Date fechaNacimiento, String nacionalidad, String telefono) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.fechaNacimiento = fechaNacimiento;
+        this.nacionalidad = nacionalidad;
+        this.telefono = telefono;
+    }
+    
+    
 
     public Integer getId() {
         return id;
