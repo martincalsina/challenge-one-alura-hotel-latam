@@ -1,5 +1,7 @@
 package views;
 
+import com.ar.alura.challene.hotel.alura.controller.ReservaController;
+import com.ar.alura.challene.hotel.alura.model.Reserva;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -21,6 +23,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.Toolkit;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import java.time.ZoneId;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
@@ -37,6 +40,8 @@ public class ReservasView extends JFrame {
 	int xMouse, yMouse;
 	private JLabel labelExit;
 	private JLabel labelAtras;
+        
+        private ReservaController reservaController = new ReservaController();
 
 	/**
 	 * Launch the application.
@@ -296,7 +301,16 @@ public class ReservasView extends JFrame {
 		btnsiguiente.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (ReservasView.txtFechaEntrada.getDate() != null && ReservasView.txtFechaSalida.getDate() != null) {		
+                                
+                                var fechaEntrada = ReservasView.txtFechaEntrada.getDate();
+                                var fechaSalida = ReservasView.txtFechaSalida.getDate();
+                                var formaDePago = String.valueOf(ReservasView.txtFormaPago.getSelectedItem());
+                               
+				if (fechaEntrada != null && fechaSalida != null) {
+                                        
+                                        Reserva nuevaReserva = new Reserva(fechaEntrada, fechaSalida, formaDePago);
+                                        reservaController.guardar(nuevaReserva);
+                                        
 					RegistroHuesped registro = new RegistroHuesped();
 					registro.setVisible(true);
 				} else {

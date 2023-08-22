@@ -63,13 +63,33 @@ public class pruebaCrearHuesped {
         huespedDao.guardar(huesped);
         
         //creacion de reservas
-        LocalDate fechaInicio = LocalDate.of(2014, 6, 29);
-        LocalDate fechaFinal = LocalDate.of(2014, 6, 30);
+        
+        Date fechaInicio = new Date();
+        Date fechaFinal = new Date();
+        
+        try {
+            fechaInicio = formatter.parse("29-06-2014");
+            fechaFinal = formatter.parse("30-06-2014");
+        } catch (ParseException ex) {
+            System.out.println(ex.getMessage());
+            ex.getStackTrace();
+        }
+        
+        
         String formaDePago = "Efectivo";
         Reserva reserva1 = new Reserva(fechaInicio, fechaFinal, formaDePago, huesped);
         
-        LocalDate fechaInicio2 = LocalDate.of(2014, 4, 29);
-        LocalDate fechaFinal2 = LocalDate.of(2014, 6, 30);
+        Date fechaInicio2 = new Date();
+        Date fechaFinal2 = new Date();
+        
+        try {
+            fechaInicio2 = formatter.parse("29-04-2014");
+            fechaFinal2 = formatter.parse("30-06-2014");
+        } catch (ParseException ex) {
+            System.out.println(ex.getMessage());
+            ex.getStackTrace();
+        }
+        
         String formaDePago2 = "Credito";
         Reserva reserva2 = new Reserva(fechaInicio2, fechaFinal2, formaDePago2, huesped);
         

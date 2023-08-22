@@ -26,10 +26,19 @@ public class pruebaCrearReserva {
 
         ReservaDAO reservaDao = new ReservaDAO();
         
-        //SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-  
-        LocalDate fechaInicio = LocalDate.of(2014, 6, 29);
-        LocalDate fechaFinal = LocalDate.of(2014, 6, 30);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        
+        Date fechaInicio = new Date();
+        Date fechaFinal = new Date();
+        
+        try {
+            fechaInicio = formatter.parse("29-06-2014");
+            fechaFinal = formatter.parse("30-06-2014");
+        } catch (ParseException ex) {
+            System.out.println(ex.getMessage());
+            ex.getStackTrace();
+        }
+        
         String formaDePago = "Efectivo";
         Reserva reserva = new Reserva(fechaInicio, fechaFinal, formaDePago);
         

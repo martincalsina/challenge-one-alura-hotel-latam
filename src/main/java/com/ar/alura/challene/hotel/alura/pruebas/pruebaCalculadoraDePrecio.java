@@ -6,7 +6,10 @@ package com.ar.alura.challene.hotel.alura.pruebas;
 
 import com.ar.alura.challene.hotel.alura.utils.CalculadoraDePrecioUtils;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 
 /**
  *
@@ -15,8 +18,20 @@ import java.time.LocalDate;
 public class pruebaCalculadoraDePrecio {
     
     public static void main(String[] args) {
-        LocalDate fechaInicio = LocalDate.of(2014, 6, 29);
-        LocalDate fechaFinal = LocalDate.of(2014, 6, 30);
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        
+        Date fechaInicio = new Date();
+        Date fechaFinal = new Date();
+        
+        try {
+            fechaInicio = formatter.parse("29-06-2014");
+            fechaFinal = formatter.parse("30-06-2014");
+        } catch (ParseException ex) {
+            System.out.println(ex.getMessage());
+            ex.getStackTrace();
+        }
+        
         String formaDePago = "Efectivo";
 
         CalculadoraDePrecioUtils calcu = new CalculadoraDePrecioUtils();

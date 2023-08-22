@@ -7,6 +7,7 @@ package com.ar.alura.challene.hotel.alura.model;
 import com.ar.alura.challene.hotel.alura.utils.CalculadoraDePrecioUtils;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,11 +30,11 @@ public class Reserva {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name="fecha_entrada")
-    //@Temporal(TemporalType.DATE)
-    private LocalDate fechaEntrada;
+    @Temporal(TemporalType.DATE)
+    private Date fechaEntrada;
     @Column(name="fecha_salida")
-    //@Temporal(TemporalType.DATE)
-    private LocalDate fechaSalida;
+    @Temporal(TemporalType.DATE)
+    private Date fechaSalida;
     private BigDecimal precio; 
     @Column(name="forma_de_pago")
     private String formaDePago;
@@ -44,14 +45,14 @@ public class Reserva {
     public Reserva() {
     }
     
-    public Reserva(LocalDate fechaEntrada, LocalDate fechaSalida, String formaDePago) {
+    public Reserva(Date fechaEntrada, Date fechaSalida, String formaDePago) {
         this.fechaEntrada = fechaEntrada;
         this.fechaSalida = fechaSalida;
         this.formaDePago = formaDePago;
         this.precio = new CalculadoraDePrecioUtils().calcularPrecio(fechaEntrada, fechaSalida, formaDePago);
     }
 
-    public Reserva(LocalDate fechaEntrada, LocalDate fechaSalida, String formaDePago, Huesped huesped) {
+    public Reserva(Date fechaEntrada, Date fechaSalida, String formaDePago, Huesped huesped) {
         this.fechaEntrada = fechaEntrada;
         this.fechaSalida = fechaSalida;
         this.formaDePago = formaDePago;
@@ -59,7 +60,7 @@ public class Reserva {
         this.huesped = huesped;
     }  
 
-    public Reserva(Integer id, LocalDate fechaEntrada, LocalDate fechaSalida, BigDecimal precio, String formaDePago, Huesped huesped) {
+    public Reserva(Integer id, Date fechaEntrada, Date fechaSalida, BigDecimal precio, String formaDePago, Huesped huesped) {
         this.id = id;
         this.fechaEntrada = fechaEntrada;
         this.fechaSalida = fechaSalida;
@@ -78,19 +79,19 @@ public class Reserva {
         this.id = id;
     }
 
-    public LocalDate getFechaEntrada() {
+    public Date getFechaEntrada() {
         return fechaEntrada;
     }
 
-    public void setFechaEntrada(LocalDate fechaEntrada) {
+    public void setFechaEntrada(Date fechaEntrada) {
         this.fechaEntrada = fechaEntrada;
     }
 
-    public LocalDate getFechaSalida() {
+    public Date getFechaSalida() {
         return fechaSalida;
     }
 
-    public void setFechaSalida(LocalDate fechaSalida) {
+    public void setFechaSalida(Date fechaSalida) {
         this.fechaSalida = fechaSalida;
     }
 
