@@ -43,6 +43,7 @@ public class HuespedDAO {
     }
     
     public void modificar(Integer idHuesped, Huesped huespedEditado) {
+        
        EntityManager em = jpaUtils.getEntityManager();
        
        Huesped huespedOriginal = this.buscarPorId(idHuesped);
@@ -67,7 +68,7 @@ public class HuespedDAO {
         return huesped;
     }
     
-    public List<Huesped> traerTodos(Huesped huesped) {
+    public List<Huesped> traerTodos() {
         
         EntityManager em = jpaUtils.getEntityManager();
         

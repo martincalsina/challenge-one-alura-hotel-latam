@@ -61,6 +61,7 @@ public class ReservaDAO {
         String jpql = "SELECT r FROM Reserva AS r";
         List<Reserva> reservas = em.createQuery(jpql, Reserva.class).getResultList();
         em.close();
+        
         return reservas;
     }
     
@@ -72,6 +73,7 @@ public class ReservaDAO {
         String jpql = "SELECT r FROM Reserva AS r WHERE r.id = :id";
         Reserva reserva =  em.createQuery(jpql, Reserva.class).setParameter("id", numReserva).getSingleResult();
         em.close();
+        
         return reserva;
     }
     
