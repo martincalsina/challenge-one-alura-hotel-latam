@@ -5,6 +5,7 @@
 package com.ar.alura.challene.hotel.alura.dao;
 
 import com.ar.alura.challene.hotel.alura.model.Reserva;
+import com.ar.alura.challene.hotel.alura.utils.JPAUtils;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -14,33 +15,64 @@ import javax.persistence.EntityManager;
  */
 public class ReservaDAO {
     
-    private EntityManager em;
+    private JPAUtils jpaUtils;
     
-    public ReservaDAO(EntityManager em) {
-        this.em = em;
+    public ReservaDAO() {
+        this.jpaUtils = new JPAUtils();
     }
     
     public void guardar(Reserva reserva) {
+        
+        EntityManager em = jpaUtils.getEntityManager();
+        
+        em.getTransaction().begin();
         em.persist(reserva);
+        em.getTransaction().commit();
+        em.close();
     }
     
     public void eliminar(Reserva reserva) {
+        
+        EntityManager em = jpaUtils.getEntityManager();
+        
+        em.getTransaction().begin();
         reserva = em.merge(reserva);
         em.remove(reserva);
+        em.getTransaction().commit();
+        em.close();
     }
     
     public Reserva traer(Reserva reserva) {
-        return em.merge(reserva);
+        
+        EntityManager em = jpaUtils.getEntityManager();
+        
+        em.getTransaction().begin();
+        reserva = em.merge(reserva);
+        em.getTransaction().commit();
+        em.close();
+        return reserva;
     }
     
     public List<Reserva> traerTodos() {
-        String jpql = "SELECT r FROM reserva AS r";
-        return em.createQuery(jpql, Reserva.class).getResultList();
+        
+        EntityManager em = jpaUtils.getEntityManager();
+        
+        em.getTransaction().begin();
+        String jpql = "SELECT r FROM Reserva AS r";
+        List<Reserva> reservas = em.createQuery(jpql, Reserva.class).getResultList();
+        em.close();
+        return reservas;
     }
     
     public Reserva buscarPorNumero(Integer numReserva) {
-        String jpql = "SELECT r FROM reserva AS r WHERE reserva.id = :id";
-        return em.createQuery(jpql, Reserva.class).setParameter("id", numReserva).getSingleResult();
+        
+        EntityManager em = jpaUtils.getEntityManager();
+        
+        em.getTransaction().begin();
+        String jpql = "SELECT r FROM Reserva AS r WHERE r.id = :id";
+        Reserva reserva =  em.createQuery(jpql, Reserva.class).setParameter("id", numReserva).getSingleResult();
+        em.close();
+        return reserva;
     }
     
 }

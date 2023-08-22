@@ -25,10 +25,9 @@ import javax.persistence.EntityManager;
 public class pruebaCrearHuesped {
     
     public static void main(String[] args) {
-        
-        EntityManager em = new JPAUtils().getEntityManager();
-        HuespedDAO huespedDao = new HuespedDAO(em);
-        ReservaDAO reservaDao = new ReservaDAO(em);
+
+        HuespedDAO huespedDao = new HuespedDAO();
+        ReservaDAO reservaDao = new ReservaDAO();
         
         //creacion de Huesped
         Huesped huesped = new Huesped();
@@ -41,7 +40,7 @@ public class pruebaCrearHuesped {
         
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         try {
-            Date fechaNacimiento = formatter.parse("19-03-2005");
+            Date fechaNacimiento = formatter.parse("19-04-2005");
             huesped.setFechaNacimiento(fechaNacimiento);
         } catch (ParseException ex) {
             System.out.println(ex.getMessage());
@@ -60,7 +59,7 @@ public class pruebaCrearHuesped {
         //huesped.setId(1); NO VA CUANDO HAY GENERATEDVALUES
         
         //guardado de Huesped en DB
-        em.getTransaction().begin();
+        //em.getTransaction().begin();
         huespedDao.guardar(huesped);
         
         //creacion de reservas
@@ -83,10 +82,11 @@ public class pruebaCrearHuesped {
         reservas.add(reserva2);
         
         //actualizacion de las reservas del huesped en DB
-        huesped = huespedDao.traer(huesped);
+        Integer huespedId = huesped.getId();
         huesped.setReservas(reservas);
-        em.getTransaction().commit();
-        em.close();
+        huespedDao.modificar(huespedId, huesped);
+        //em.getTransaction().commit();
+        //em.close();
         
         
         

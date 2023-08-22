@@ -23,22 +23,19 @@ import javax.swing.text.DateFormatter;
 public class pruebaCrearReserva {
     
     public static void main(String[] args) {
+
+        ReservaDAO reservaDao = new ReservaDAO();
         
-        EntityManager em = new JPAUtils().getEntityManager();
-        ReservaDAO reservaDao = new ReservaDAO(em);
-        
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        //SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
   
         LocalDate fechaInicio = LocalDate.of(2014, 6, 29);
         LocalDate fechaFinal = LocalDate.of(2014, 6, 30);
         String formaDePago = "Efectivo";
         Reserva reserva = new Reserva(fechaInicio, fechaFinal, formaDePago);
         
-        em.getTransaction().begin();
         reservaDao.guardar(reserva);
-        System.out.println("Reserva guardada");
         
-        em.getTransaction().commit();
+        System.out.println("Reserva guardada");
     }
     
 }

@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -27,8 +29,10 @@ public class Reserva {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name="fecha_entrada")
+    //@Temporal(TemporalType.DATE)
     private LocalDate fechaEntrada;
     @Column(name="fecha_salida")
+    //@Temporal(TemporalType.DATE)
     private LocalDate fechaSalida;
     private BigDecimal precio; 
     @Column(name="forma_de_pago")
@@ -36,6 +40,9 @@ public class Reserva {
     
     @ManyToOne()
     private Huesped huesped;
+    
+    public Reserva() {
+    }
     
     public Reserva(LocalDate fechaEntrada, LocalDate fechaSalida, String formaDePago) {
         this.fechaEntrada = fechaEntrada;
@@ -51,6 +58,17 @@ public class Reserva {
         this.precio = new CalculadoraDePrecioUtils().calcularPrecio(fechaEntrada, fechaSalida, formaDePago);
         this.huesped = huesped;
     }  
+
+    public Reserva(Integer id, LocalDate fechaEntrada, LocalDate fechaSalida, BigDecimal precio, String formaDePago, Huesped huesped) {
+        this.id = id;
+        this.fechaEntrada = fechaEntrada;
+        this.fechaSalida = fechaSalida;
+        this.precio = precio;
+        this.formaDePago = formaDePago;
+        this.huesped = huesped;
+    }
+    
+    
 
     public Integer getId() {
         return id;

@@ -18,6 +18,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -33,6 +35,7 @@ public class Huesped {
     private String nombre;
     private String apellido;
     @Column(name="fecha_nacimiento")
+    @Temporal(TemporalType.DATE)
     private Date fechaNacimiento;
     private String nacionalidad;
     private String telefono;
