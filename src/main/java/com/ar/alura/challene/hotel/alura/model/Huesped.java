@@ -4,10 +4,12 @@
  */
 package com.ar.alura.challene.hotel.alura.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import static javax.persistence.FetchType.LAZY;
@@ -15,12 +17,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
  * @author marti
  */
 @Entity
+@Table(name="huesped")
 public class Huesped {
     
     @Id
@@ -28,18 +32,35 @@ public class Huesped {
     private Integer id;
     private String nombre;
     private String apellido;
+    @Column(name="fecha_nacimiento")
     private Date fechaNacimiento;
     private String nacionalidad;
     private String telefono;
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Reserva> reservas = new ArrayList<>();
+    
+    @OneToMany(mappedBy="huesped", fetch = FetchType.LAZY)
+    private List<Reserva> reservas;
+    
+    
+    public Huesped() {
+    }
 
-    public Huesped(String nombre, String apellido, Date fechaNacimiento, String nacionalidad, String telefono) {
+    public Huesped(String nombre, String apellido, Date fechaNacimiento, String nacionalidad, String telefono, ArrayList<Reserva> reservas) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.fechaNacimiento = fechaNacimiento;
         this.nacionalidad = nacionalidad;
         this.telefono = telefono;
+        this.reservas = reservas;
+    }
+
+    public Huesped(Integer id, String nombre, String apellido, Date fechaNacimiento, String nacionalidad, String telefono, ArrayList<Reserva> reservas) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.fechaNacimiento = fechaNacimiento;
+        this.nacionalidad = nacionalidad;
+        this.telefono = telefono;
+        this.reservas = reservas;
     }
     
     
@@ -96,7 +117,7 @@ public class Huesped {
         return reservas;
     }
 
-    public void setReservas(List<Reserva> reservas) {
+    public void setReservas(ArrayList<Reserva> reservas) {
         this.reservas = reservas;
     }
     

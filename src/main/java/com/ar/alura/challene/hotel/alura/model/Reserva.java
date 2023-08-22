@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -32,14 +33,24 @@ public class Reserva {
     private BigDecimal precio; 
     @Column(name="forma_de_pago")
     private String formaDePago;
-
+    
+    @ManyToOne()
+    private Huesped huesped;
+    
     public Reserva(LocalDate fechaEntrada, LocalDate fechaSalida, String formaDePago) {
         this.fechaEntrada = fechaEntrada;
         this.fechaSalida = fechaSalida;
         this.formaDePago = formaDePago;
         this.precio = new CalculadoraDePrecioUtils().calcularPrecio(fechaEntrada, fechaSalida, formaDePago);
     }
-    
+
+    public Reserva(LocalDate fechaEntrada, LocalDate fechaSalida, String formaDePago, Huesped huesped) {
+        this.fechaEntrada = fechaEntrada;
+        this.fechaSalida = fechaSalida;
+        this.formaDePago = formaDePago;
+        this.precio = new CalculadoraDePrecioUtils().calcularPrecio(fechaEntrada, fechaSalida, formaDePago);
+        this.huesped = huesped;
+    }  
 
     public Integer getId() {
         return id;

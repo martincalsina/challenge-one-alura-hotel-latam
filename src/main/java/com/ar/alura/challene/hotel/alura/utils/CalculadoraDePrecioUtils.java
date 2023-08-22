@@ -5,6 +5,7 @@
 package com.ar.alura.challene.hotel.alura.utils;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -22,11 +23,12 @@ public class CalculadoraDePrecioUtils {
     }
     
     public BigDecimal calcularPrecio(LocalDate fechaInicial, LocalDate fechaFinal, String formaDePago) {
+        MathContext mc = new MathContext(8);
         BigDecimal precioAcumulado = this.tasaFija;
         BigDecimal diferenciaDias = new BigDecimal(ChronoUnit.DAYS.between(fechaInicial, fechaFinal));
-        precioAcumulado.add(diferenciaDias.multiply(precioPorDia));
+        precioAcumulado = precioAcumulado.add(diferenciaDias.multiply(precioPorDia));
         BigDecimal descuento = this.calcularDescuento(formaDePago);
-        precioAcumulado.add (precioPorDia.multiply(descuento).negate());
+        precioAcumulado = precioAcumulado.subtract(precioPorDia.multiply(descuento), mc);
         return precioAcumulado;
     }
     
@@ -34,9 +36,9 @@ public class CalculadoraDePrecioUtils {
         BigDecimal descuento = new BigDecimal(0);
      
         if (formaDePago.equals("Efectivo")) {
-            descuento.add(new BigDecimal(0.2));
+            descuento = descuento.add(new BigDecimal(0.2));
         } else if (formaDePago.equals("Credito")) {
-            descuento.add(new BigDecimal(0.1));
+            descuento = descuento.add(new BigDecimal(0.1));
         }
         return descuento;
     }
