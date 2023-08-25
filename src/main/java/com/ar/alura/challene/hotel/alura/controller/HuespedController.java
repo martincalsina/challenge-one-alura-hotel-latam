@@ -32,6 +32,12 @@ public class HuespedController {
         
     }
     
+    public void eliminarPorId(Integer id) {
+        
+        this.huespedDao.eliminarPorId(id);
+        
+    }
+    
     public void modificar(Integer idHuesped, Huesped huespedEditado) {
         
        this.huespedDao.modificar(idHuesped, huespedEditado);

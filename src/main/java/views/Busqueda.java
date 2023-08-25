@@ -230,7 +230,6 @@ public class Busqueda extends JFrame {
 		btnbuscar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-                            String textoBusqueda = txtBuscar.getText();
 			}
 		});
 		btnbuscar.setLayout(null);
@@ -238,6 +237,7 @@ public class Busqueda extends JFrame {
 		btnbuscar.setBounds(748, 125, 122, 35);
 		btnbuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 		contentPane.add(btnbuscar);
+                
 		
 		JLabel lblBuscar = new JLabel("BUSCAR");
 		lblBuscar.setBounds(0, 0, 122, 35);
@@ -274,6 +274,40 @@ public class Busqueda extends JFrame {
 		lblEliminar.setBounds(0, 0, 122, 35);
 		btnEliminar.add(lblEliminar);
 		setResizable(false);
+                
+                btnEliminar.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        int selectedIndex = panel.getSelectedIndex(); //el indice 0 es la tabla de reservas, el 1 de huespedes
+                        if (selectedIndex == -1) {
+                            //ninguna tabla seleccionada
+                            System.out.println("No se ha seleccionado ninguna tabla");
+                        } 
+                        else if (selectedIndex == 0) {
+                            //caso en que se ha seleccionado una reserva
+                            int selectedRow = tbReservas.getSelectedRow();
+                            //se selecciona el id
+                            Integer reservaId = Integer.valueOf(modelo.getValueAt(selectedRow, 0).toString());
+                            System.out.println("Se ha seleccionado la reserva de id: " + reservaId);
+                            reservaController.eliminarPorId(reservaId);
+                            System.out.println("Se ha eliminado la reserva de id: " + reservaId);
+                            actualizarTodasLasReservas();
+                            actualizarTodosLosHuespedes();
+                        }
+                        else if (selectedIndex == 1) {
+                            //caso en que se ha seleccionado un huesped
+                            int selectedRow = tbHuespedes.getSelectedRow();
+                            //se selecciona el id
+                            Integer huespedId = Integer.valueOf(modeloHuesped.getValueAt(selectedRow, 0).toString());
+                            System.out.println("Se ha seleccionado al huesped de id: " + huespedId);
+                            huespedController.eliminarPorId(huespedId);
+                            System.out.println("Se ha borrado al huesped de id: " +huespedId+ " y todas sus reservas");
+                            actualizarTodasLasReservas();
+                            actualizarTodosLosHuespedes();
+                                    
+                        }
+                    }
+                }); 
 	}
 	
     //Código que permite mover la ventana por la pantalla según la posición de "x" y "y"

@@ -42,6 +42,20 @@ public class ReservaDAO {
         em.close();
     }
     
+    public void eliminarPorId(Integer id) {
+        
+        EntityManager em = jpaUtils.getEntityManager();
+        
+        Reserva reserva = this.buscarPorNumero(id);
+        
+        em.getTransaction().begin();
+        reserva = em.merge(reserva);
+        em.remove(reserva);
+        em.getTransaction().commit();
+        em.close();
+        
+    }
+    
     public Reserva traer(Reserva reserva) {
         
         EntityManager em = jpaUtils.getEntityManager();

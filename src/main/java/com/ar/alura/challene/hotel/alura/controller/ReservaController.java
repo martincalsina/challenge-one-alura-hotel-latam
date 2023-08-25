@@ -32,6 +32,12 @@ public class ReservaController {
         
     }
     
+    public void eliminarPorId(Integer id) {
+        
+        this.reservaDao.eliminarPorId(id);
+        
+    }
+    
     public Reserva traer(Reserva reserva) {
         
         return this.reservaDao.traer(reserva);

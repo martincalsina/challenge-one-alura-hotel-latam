@@ -5,6 +5,7 @@
 package com.ar.alura.challene.hotel.alura.dao;
 
 import com.ar.alura.challene.hotel.alura.model.Huesped;
+import com.ar.alura.challene.hotel.alura.model.Reserva;
 import com.ar.alura.challene.hotel.alura.utils.JPAUtils;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -40,6 +41,24 @@ public class HuespedDAO {
         em.remove(huesped);
         em.getTransaction().commit();
         em.close();
+    }
+    
+    public void eliminarPorId(Integer id) {
+        
+        Huesped huesped = this.buscarPorId(id);
+        
+        EntityManager em = jpaUtils.getEntityManager();
+        em.getTransaction().begin();
+        huesped = em.merge(huesped);
+        List<Reserva> reservas = huesped.getReservas();
+        for (Reserva reserva : reservas) {
+            reserva = em.merge(reserva);
+            em.remove(reserva);
+        }
+        em.remove(huesped);
+        em.getTransaction().commit();
+        em.close();
+        
     }
     
     public void modificar(Integer idHuesped, Huesped huespedEditado) {
