@@ -1,5 +1,7 @@
 package views;
 
+import com.ar.alura.challene.hotel.alura.controller.ReservaController;
+import com.ar.alura.challene.hotel.alura.model.Reserva;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -25,6 +27,7 @@ import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.math.BigDecimal;
 
 @SuppressWarnings("serial")
 public class Busqueda extends JFrame {
@@ -38,6 +41,8 @@ public class Busqueda extends JFrame {
 	private JLabel labelAtras;
 	private JLabel labelExit;
 	int xMouse, yMouse;
+        
+        private ReservaController reservaController = new ReservaController();
 
 	/**
 	 * Launch the application.
@@ -105,6 +110,8 @@ public class Busqueda extends JFrame {
 		panel.addTab("Reservas", new ImageIcon(Busqueda.class.getResource("/imagenes/reservado.png")), scroll_table, null);
 		scroll_table.setVisible(true);
 		
+                //inicializacion de la tabla de reservas
+                actualizarTodasLasReservas();
 		
 		tbHuespedes = new JTable();
 		tbHuespedes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -263,14 +270,40 @@ public class Busqueda extends JFrame {
 	}
 	
 //Código que permite mover la ventana por la pantalla según la posición de "x" y "y"
-	 private void headerMousePressed(java.awt.event.MouseEvent evt) {
-	        xMouse = evt.getX();
-	        yMouse = evt.getY();
-	    }
+    private void headerMousePressed(java.awt.event.MouseEvent evt) {
+        xMouse = evt.getX();
+        yMouse = evt.getY();
+    }
 
-	    private void headerMouseDragged(java.awt.event.MouseEvent evt) {
-	        int x = evt.getXOnScreen();
-	        int y = evt.getYOnScreen();
-	        this.setLocation(x - xMouse, y - yMouse);
-}
+    private void headerMouseDragged(java.awt.event.MouseEvent evt) {
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+        this.setLocation(x - xMouse, y - yMouse);
+
+    }
+    
+    private void actualizarTodasLasReservas() {
+        borrarTodasLasReservas();     
+        List<Reserva> listaReservas = reservaController.traerTodos();
+        
+        for (Reserva reserva : listaReservas) {
+            Integer numeroDeReserva = reserva.getId();
+            String fechaEntrada = reserva.getFechaEntrada().toString();
+            String fechaSalida = reserva.getFechaSalida().toString();
+            BigDecimal valor = reserva.getPrecio();
+            String formaDePago = reserva.getFormaDePago();
+            modelo.addRow(new Object[] {numeroDeReserva,
+                                        fechaEntrada,
+                                        fechaSalida,
+                                        valor,
+                                        formaDePago});
+        }
+    }
+    
+    private void borrarTodasLasReservas() {
+        int rowCount = modelo.getRowCount();
+        for (int i = rowCount - 1; i >= 0; i--) {
+            modelo.removeRow(i);
+        }
+    }
 }
