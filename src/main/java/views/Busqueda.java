@@ -30,6 +30,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @SuppressWarnings("serial")
 public class Busqueda extends JFrame {
@@ -259,6 +264,46 @@ public class Busqueda extends JFrame {
 		lblEditar.setFont(new Font("Roboto", Font.PLAIN, 18));
 		lblEditar.setBounds(0, 0, 122, 35);
 		btnEditar.add(lblEditar);
+                
+                btnEditar.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        int selectedIndex = panel.getSelectedIndex();
+                        if (selectedIndex == -1) {
+                            //ninguna tabla seleccionada
+                            System.out.println("No se ha seleccionado ninguna tabla");
+                        }
+                        else if (selectedIndex == 0) {
+                            //se ha seleccionado la tabla de reservas
+                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+                            Date fechaEntrada = new Date();
+                            Date fechaSalida = new Date();
+                            
+                            int selectedRow = tbReservas.getSelectedRow();
+                            Integer reservaId = Integer.valueOf(modelo.getValueAt(selectedRow, 0).toString());
+                            try {
+                                fechaEntrada = formatter.parse(modelo.getValueAt(selectedRow, 1).toString());
+                                fechaSalida = formatter.parse(modelo.getValueAt(selectedRow, 2).toString());
+                                
+                            } catch (ParseException ex) {
+                                System.out.println(ex.getMessage());
+                                System.out.println(ex.getStackTrace());
+                            }
+                            BigDecimal valor = new BigDecimal(modelo.getValueAt(selectedRow, 3).toString());
+                            String formaDePago = modelo.getValueAt(selectedRow, 4).toString();
+                            
+                            Reserva reserva = new Reserva(reservaId, fechaEntrada, fechaSalida, valor, formaDePago);
+                            reservaController.modificar(reserva);
+                                    
+                            actualizarTodasLasReservas();
+                            actualizarTodosLosHuespedes();
+                            
+                            
+                        }
+                    }
+                });
+                
 		
 		JPanel btnEliminar = new JPanel();
 		btnEliminar.setLayout(null);

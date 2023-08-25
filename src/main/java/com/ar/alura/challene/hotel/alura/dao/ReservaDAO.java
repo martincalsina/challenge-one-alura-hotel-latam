@@ -67,6 +67,22 @@ public class ReservaDAO {
         return reserva;
     }
     
+    public void modificar(Reserva reserva) {
+        
+        Reserva reservaOriginal = this.buscarPorNumero(reserva.getId());
+        
+        EntityManager em = jpaUtils.getEntityManager();
+        em.getTransaction().begin();
+        reservaOriginal = em.merge(reservaOriginal);
+        reservaOriginal.setFechaEntrada(reserva.getFechaEntrada());
+        reservaOriginal.setFechaSalida(reserva.getFechaSalida());
+        reservaOriginal.setPrecio(reserva.getPrecio());
+        reservaOriginal.setFormaDePago(reserva.getFormaDePago());
+        em.getTransaction().commit();
+        em.close();
+        
+    }
+    
     public List<Reserva> traerTodos() {
         
         EntityManager em = jpaUtils.getEntityManager();

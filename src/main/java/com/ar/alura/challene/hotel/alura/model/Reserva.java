@@ -58,7 +58,15 @@ public class Reserva {
         this.formaDePago = formaDePago;
         this.precio = new CalculadoraDePrecioUtils().calcularPrecio(fechaEntrada, fechaSalida, formaDePago);
         this.huesped = huesped;
-    }  
+    }
+    
+    public Reserva(Integer id, Date fechaEntrada, Date fechaSalida, BigDecimal precio, String formaDePago) {
+        this.id = id;
+        this.fechaEntrada = fechaEntrada;
+        this.fechaSalida = fechaSalida;
+        this.precio = precio;
+        this.formaDePago = formaDePago;
+    }
 
     public Reserva(Integer id, Date fechaEntrada, Date fechaSalida, BigDecimal precio, String formaDePago, Huesped huesped) {
         this.id = id;

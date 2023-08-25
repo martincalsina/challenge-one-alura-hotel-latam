@@ -38,6 +38,12 @@ public class ReservaController {
         
     }
     
+    public void modificar(Reserva reserva) {
+        
+        this.reservaDao.modificar(reserva);
+        
+    }
+    
     public Reserva traer(Reserva reserva) {
         
         return this.reservaDao.traer(reserva);
