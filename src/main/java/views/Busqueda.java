@@ -1,6 +1,8 @@
 package views;
 
+import com.ar.alura.challene.hotel.alura.controller.HuespedController;
 import com.ar.alura.challene.hotel.alura.controller.ReservaController;
+import com.ar.alura.challene.hotel.alura.model.Huesped;
 import com.ar.alura.challene.hotel.alura.model.Reserva;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -43,6 +45,7 @@ public class Busqueda extends JFrame {
 	int xMouse, yMouse;
         
         private ReservaController reservaController = new ReservaController();
+        private HuespedController huespedController = new HuespedController();
 
 	/**
 	 * Launch the application.
@@ -127,6 +130,10 @@ public class Busqueda extends JFrame {
 		JScrollPane scroll_tableHuespedes = new JScrollPane(tbHuespedes);
 		panel.addTab("Huéspedes", new ImageIcon(Busqueda.class.getResource("/imagenes/pessoas.png")), scroll_tableHuespedes, null);
 		scroll_tableHuespedes.setVisible(true);
+                
+                //inicializacion de la tabla de huespedes
+                actualizarTodosLosHuespedes();
+                
 		
 		JLabel lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setIcon(new ImageIcon(Busqueda.class.getResource("/imagenes/Ha-100px.png")));
@@ -223,7 +230,7 @@ public class Busqueda extends JFrame {
 		btnbuscar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
+                            String textoBusqueda = txtBuscar.getText();
 			}
 		});
 		btnbuscar.setLayout(null);
@@ -269,7 +276,7 @@ public class Busqueda extends JFrame {
 		setResizable(false);
 	}
 	
-//Código que permite mover la ventana por la pantalla según la posición de "x" y "y"
+    //Código que permite mover la ventana por la pantalla según la posición de "x" y "y"
     private void headerMousePressed(java.awt.event.MouseEvent evt) {
         xMouse = evt.getX();
         yMouse = evt.getY();
@@ -304,6 +311,57 @@ public class Busqueda extends JFrame {
         int rowCount = modelo.getRowCount();
         for (int i = rowCount - 1; i >= 0; i--) {
             modelo.removeRow(i);
+        }
+    }
+    
+    
+    private void actualizarTodosLosHuespedes() {
+        borrarTodosLosHuespedes();
+        
+        List<Huesped> listaHuespedes = huespedController.traerTodos();
+        
+        for (Huesped huesped : listaHuespedes) {
+            Integer numeroDeHuesped = huesped.getId();
+            String nombre = huesped.getNombre();
+            String apellido = huesped.getApellido();
+            String fechaNacimiento = huesped.getFechaNacimiento().toString();
+            String nacionalidad = huesped.getNacionalidad();
+            String telefono = huesped.getTelefono();
+            List<Reserva> reservas = huesped.getReservas();
+            if (reservas.size() == 0) {
+                
+                Integer numeroDeReserva = 0;
+                modeloHuesped.addRow(new Object[] {numeroDeHuesped,
+                    nombre, 
+                    apellido,
+                    fechaNacimiento,
+                    nacionalidad,
+                    telefono,
+                    numeroDeReserva});
+                
+            } else {
+                
+                for (Reserva reserva : reservas) {
+                    
+                    Integer numeroDeReserva = reserva.getId();
+                    modeloHuesped.addRow(new Object[] {numeroDeHuesped,
+                    nombre, 
+                    apellido,
+                    fechaNacimiento,
+                    nacionalidad,
+                    telefono,
+                    numeroDeReserva});
+
+                }
+                
+            }
+        }
+    }
+    
+    private void borrarTodosLosHuespedes() {
+        int rowCount = modeloHuesped.getRowCount();
+        for (int i = rowCount - 1; i >= 0; i--) {
+            modeloHuesped.removeRow(i);
         }
     }
 }

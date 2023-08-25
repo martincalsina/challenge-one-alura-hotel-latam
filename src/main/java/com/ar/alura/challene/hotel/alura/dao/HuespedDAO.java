@@ -73,7 +73,7 @@ public class HuespedDAO {
         EntityManager em = jpaUtils.getEntityManager();
         
         em.getTransaction().begin();
-        String jpql = "SELECT h FROM huesped AS h";
+        String jpql = "SELECT h FROM Huesped AS h";
         List<Huesped> huespedes = em.createQuery(jpql, Huesped.class).getResultList();
         em.close();
         
