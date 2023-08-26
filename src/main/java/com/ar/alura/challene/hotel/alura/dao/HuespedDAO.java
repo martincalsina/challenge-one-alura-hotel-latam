@@ -133,13 +133,19 @@ public class HuespedDAO {
     public Huesped buscarPorNumeroReserva(Integer numReserva) {
         
         EntityManager em = jpaUtils.getEntityManager();
-        
-        em.getTransaction().begin();
-        String jpql = "SELECT h FROM Huesped AS h JOIN h.reservas AS r WHERE r.id = :id";
-        Huesped huesped = em.createQuery(jpql, Huesped.class).setParameter("id", numReserva).getSingleResult();
-        em.close();
-        return huesped;
-        
+        try {
+            em.getTransaction().begin();
+            String jpql = "SELECT h FROM Huesped AS h JOIN h.reservas AS r WHERE r.id = :id";
+            Huesped huesped = em.createQuery(jpql, Huesped.class).setParameter("id", numReserva).getSingleResult();
+            em.close();
+            return huesped;
+        } catch (Exception ex) {
+            System.out.println("No se ha encontrado ningún huesped con la reserva indicada");
+            System.out.println(ex.getMessage());
+            System.out.println(ex.getStackTrace());
+            return new Huesped();
+        }
+
     }
     
     

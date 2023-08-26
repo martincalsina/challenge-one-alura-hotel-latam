@@ -243,6 +243,29 @@ public class Busqueda extends JFrame {
 		btnbuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 		contentPane.add(btnbuscar);
                 
+                btnbuscar.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        String buscador = txtBuscar.getText();
+                        if (buscador.equals("")) {
+                            System.out.println("No se ha ingresado nada para buscar");
+                            actualizarTodosLosHuespedes();
+                            actualizarTodasLasReservas();
+                        } else {
+                            try {
+                                //si es un entero, ha de ser porque es el id de una reserva
+                                Integer reservaId = Integer.parseInt(buscador);
+                                actualizarTodosLosHuespedes(reservaId);
+                                actualizarTodasLasReservas(reservaId);
+
+                            } catch (NumberFormatException ex) {
+                                //si no lo es, es porque ha de ser un apellido de algun huesped
+                                String apellido = buscador;
+                            }
+                        }
+                    }
+                 });
+                
 		
 		JLabel lblBuscar = new JLabel("BUSCAR");
 		lblBuscar.setBounds(0, 0, 122, 35);
@@ -415,6 +438,29 @@ public class Busqueda extends JFrame {
         }
     }
     
+    private void actualizarTodasLasReservas(Integer reservaId) {
+        borrarTodasLasReservas();
+        try {
+        Reserva reserva = reservaController.buscarPorNumero(reservaId);
+        Integer numeroDeReserva = reserva.getId();
+        String fechaEntrada = reserva.getFechaEntrada().toString();
+        String fechaSalida = reserva.getFechaSalida().toString();
+        BigDecimal valor = reserva.getPrecio();
+        String formaDePago = reserva.getFormaDePago();
+        modelo.addRow(new Object[] {
+            numeroDeReserva,
+            fechaEntrada,
+            fechaSalida,
+            valor,
+            formaDePago
+        });
+        } catch (NullPointerException ex) {
+            System.out.println("No se encontró ninguna reserva con el id solicitado");
+            System.out.println(ex.getMessage());
+            System.out.println(ex.getStackTrace());
+        }
+    }
+    
     private void borrarTodasLasReservas() {
         int rowCount = modelo.getRowCount();
         for (int i = rowCount - 1; i >= 0; i--) {
@@ -463,6 +509,36 @@ public class Busqueda extends JFrame {
                 }
                 
             }
+        }
+    }
+    
+    private void actualizarTodosLosHuespedes(Integer reservaId) {
+        borrarTodosLosHuespedes();
+        
+        try {
+        Huesped huesped = huespedController.buscarPorNumeroReserva(reservaId);
+       
+        Integer numeroDeHuesped = huesped.getId();
+        String nombre = huesped.getNombre();
+        String apellido = huesped.getApellido();
+        String fechaNacimiento = huesped.getFechaNacimiento().toString();
+        String nacionalidad = huesped.getNacionalidad();
+        String telefono = huesped.getTelefono();
+        Integer numeroReserva = reservaId;
+        
+        modeloHuesped.addRow(new Object[] {
+            numeroDeHuesped,
+            nombre,
+            apellido,
+            fechaNacimiento,
+            nacionalidad,
+            telefono,
+            numeroReserva
+        });
+        } catch (NullPointerException ex) {
+            System.out.println("No se encontró ningún huesped con la reserva indicada");
+            System.out.println(ex.getMessage());
+            System.out.println(ex.getStackTrace());
         }
     }
     

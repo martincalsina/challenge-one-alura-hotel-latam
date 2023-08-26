@@ -97,14 +97,22 @@ public class ReservaDAO {
     
     public Reserva buscarPorNumero(Integer numReserva) {
         
-        EntityManager em = jpaUtils.getEntityManager();
+        try {
+            EntityManager em = jpaUtils.getEntityManager();
+
+            em.getTransaction().begin();
+            String jpql = "SELECT r FROM Reserva AS r WHERE r.id = :id";
+            Reserva reserva = em.createQuery(jpql, Reserva.class).setParameter("id", numReserva).getSingleResult();
+            em.close();
+
+            return reserva;
+        } catch (Exception ex) {
+            System.out.println("No se ha econtrado reserva con el id indicado");
+            System.out.println(ex.getMessage());
+            ex.getStackTrace();
+            return new Reserva();
+        }
         
-        em.getTransaction().begin();
-        String jpql = "SELECT r FROM Reserva AS r WHERE r.id = :id";
-        Reserva reserva =  em.createQuery(jpql, Reserva.class).setParameter("id", numReserva).getSingleResult();
-        em.close();
-        
-        return reserva;
     }
     
 }
