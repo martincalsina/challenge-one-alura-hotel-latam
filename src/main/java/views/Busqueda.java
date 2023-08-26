@@ -269,13 +269,14 @@ public class Busqueda extends JFrame {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         int selectedIndex = panel.getSelectedIndex();
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                         if (selectedIndex == -1) {
                             //ninguna tabla seleccionada
                             System.out.println("No se ha seleccionado ninguna tabla");
                         }
                         else if (selectedIndex == 0) {
                             //se ha seleccionado la tabla de reservas
-                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                            
 
                             Date fechaEntrada = new Date();
                             Date fechaSalida = new Date();
@@ -297,10 +298,38 @@ public class Busqueda extends JFrame {
                             reservaController.modificar(reserva);
                                     
                             actualizarTodasLasReservas();
-                            actualizarTodosLosHuespedes();
-                            
-                            
+                            //actualizarTodosLosHuespedes();
+                            //suponemos que no se modifica al huesped
+       
                         }
+                        else if (selectedIndex == 1) {
+                            //se ha seleccionado la tabla de huespedes
+                            int selectedRow = tbHuespedes.getSelectedRow();
+                            
+                            Integer huespedId = Integer.valueOf(modeloHuesped.getValueAt(selectedRow, 0).toString());
+                            String nombre = modeloHuesped.getValueAt(selectedRow, 1).toString();
+                            String apellido = modeloHuesped.getValueAt(selectedRow, 2).toString();
+                            
+                            Date fechaNacimiento = new Date();
+                            
+                            try {
+                                fechaNacimiento = formatter.parse(modeloHuesped.getValueAt(selectedRow, 3).toString());
+                            } catch (ParseException ex) {
+                                System.out.println(ex.getMessage());
+                                System.out.println(ex.getStackTrace());
+                            }
+                            
+                            String nacionalidad = modeloHuesped.getValueAt(selectedRow, 4).toString();
+                            String telefono = modeloHuesped.getValueAt(selectedRow, 5).toString();
+                            //la columna de reserva suponemos que no se modifica
+                            
+                            Huesped huesped = new Huesped(huespedId, nombre, apellido, fechaNacimiento, nacionalidad, telefono);
+                            
+                            huespedController.modificar(huesped);
+                            
+                            actualizarTodosLosHuespedes();
+                        }
+   
                     }
                 });
                 

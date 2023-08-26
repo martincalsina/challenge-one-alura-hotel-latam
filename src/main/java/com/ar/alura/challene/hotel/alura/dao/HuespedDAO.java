@@ -61,17 +61,23 @@ public class HuespedDAO {
         
     }
     
-    public void modificar(Integer idHuesped, Huesped huespedEditado) {
+    public void modificar(Huesped huesped) {
         
+       Huesped huespedOriginal = this.buscarPorId(huesped.getId());
+    
        EntityManager em = jpaUtils.getEntityManager();
-       
-       Huesped huespedOriginal = this.buscarPorId(idHuesped);
        
        em.getTransaction().begin();
        huespedOriginal = em.merge(huespedOriginal);
-       huespedOriginal = huespedEditado;
+       huespedOriginal.setNombre(huesped.getNombre());
+       huespedOriginal.setApellido(huesped.getApellido());
+       huespedOriginal.setFechaNacimiento(huesped.getFechaNacimiento());
+       huespedOriginal.setNacionalidad(huesped.getNacionalidad());
+       huespedOriginal.setTelefono(huesped.getTelefono());
        em.getTransaction().commit();
        em.close();
+       
+       
        
     }
     

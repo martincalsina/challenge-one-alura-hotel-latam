@@ -38,9 +38,9 @@ public class HuespedController {
         
     }
     
-    public void modificar(Integer idHuesped, Huesped huespedEditado) {
+    public void modificar(Huesped huesped) {
         
-       this.huespedDao.modificar(idHuesped, huespedEditado);
+       this.huespedDao.modificar(huesped);
        
     }
     

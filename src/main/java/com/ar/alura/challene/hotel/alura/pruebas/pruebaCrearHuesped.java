@@ -104,7 +104,7 @@ public class pruebaCrearHuesped {
         //actualizacion de las reservas del huesped en DB
         Integer huespedId = huesped.getId();
         huesped.setReservas(reservas);
-        huespedDao.modificar(huespedId, huesped);
+        huespedDao.modificar(huesped);
         //em.getTransaction().commit();
         //em.close();
         
