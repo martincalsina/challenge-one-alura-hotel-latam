@@ -115,4 +115,24 @@ public class ReservaDAO {
         
     }
     
+    public List<Reserva> buscarPorApellido(String apellidoHuesped) {
+        
+        try {
+            EntityManager em = jpaUtils.getEntityManager();
+            
+            em.getTransaction().begin();
+            String jpql = "SELECT r FROM Reserva AS r WHERE r.huesped.apellido LIKE :apellido";
+            List<Reserva> reservas = em.createQuery(jpql, Reserva.class).setParameter("apellido", "%"+apellidoHuesped+"%").getResultList();
+            em.close();
+            
+            return reservas;
+        } catch (Exception ex) {
+            System.out.println("No se ha econtrado reserva con el id indicado");
+            System.out.println(ex.getMessage());
+            ex.getStackTrace();
+            return null;
+        }
+        
+    }
+    
 }

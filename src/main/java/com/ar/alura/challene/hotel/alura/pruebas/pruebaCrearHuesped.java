@@ -32,8 +32,8 @@ public class pruebaCrearHuesped {
         //creacion de Huesped
         Huesped huesped = new Huesped();
         
-        String nombre = "Kenneth";
-        String apellido = "Gerardo";
+        String nombre = "Rodrigo";
+        String apellido = "Paulo";
         
         huesped.setNombre(nombre);
         huesped.setApellido(apellido);

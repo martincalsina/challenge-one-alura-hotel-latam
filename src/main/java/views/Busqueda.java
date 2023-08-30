@@ -261,6 +261,9 @@ public class Busqueda extends JFrame {
                             } catch (NumberFormatException ex) {
                                 //si no lo es, es porque ha de ser un apellido de algun huesped
                                 String apellido = buscador;
+                                actualizarTodosLosHuespedes(apellido);
+                                actualizarTodasLasReservas(apellido);
+                                
                             }
                         }
                     }
@@ -461,6 +464,31 @@ public class Busqueda extends JFrame {
         }
     }
     
+    private void actualizarTodasLasReservas(String apellido) {
+        borrarTodasLasReservas();
+        
+        try {
+            List<Reserva> listaReservas = reservaController.buscarPorApellido(apellido);
+            for (Reserva reserva : listaReservas) {
+            Integer numeroDeReserva = reserva.getId();
+            String fechaEntrada = reserva.getFechaEntrada().toString();
+            String fechaSalida = reserva.getFechaSalida().toString();
+            BigDecimal valor = reserva.getPrecio();
+            String formaDePago = reserva.getFormaDePago();
+            modelo.addRow(new Object[] {numeroDeReserva,
+                                        fechaEntrada,
+                                        fechaSalida,
+                                        valor,
+                                        formaDePago});
+            }
+        }   catch (NullPointerException ex) {
+            System.out.println("No se encontró ninguna reserva con el id solicitado");
+            System.out.println(ex.getMessage());
+            System.out.println(ex.getStackTrace());
+        }
+     }
+    
+    
     private void borrarTodasLasReservas() {
         int rowCount = modelo.getRowCount();
         for (int i = rowCount - 1; i >= 0; i--) {
@@ -541,6 +569,62 @@ public class Busqueda extends JFrame {
             System.out.println(ex.getStackTrace());
         }
     }
+    
+    private void actualizarTodosLosHuespedes(String apellidoHuesped) {        
+        borrarTodosLosHuespedes();
+        
+        try {
+
+            List<Huesped> listaHuespedes = huespedController.buscarPorApellido(apellidoHuesped);
+
+            for (Huesped huesped : listaHuespedes) {
+                Integer numeroDeHuesped = huesped.getId();
+                String nombre = huesped.getNombre();
+                String apellido = huesped.getApellido();
+                String fechaNacimiento = huesped.getFechaNacimiento().toString();
+                String nacionalidad = huesped.getNacionalidad();
+                String telefono = huesped.getTelefono();
+                List<Reserva> reservas = huesped.getReservas();
+                if (reservas.size() == 0) {
+
+                    Integer numeroDeReserva = 0;
+                    modeloHuesped.addRow(new Object[]{numeroDeHuesped,
+                        nombre,
+                        apellido,
+                        fechaNacimiento,
+                        nacionalidad,
+                        telefono,
+                        numeroDeReserva});
+
+                } else {
+
+                    for (Reserva reserva : reservas) {
+
+                        Integer numeroDeReserva = reserva.getId();
+                        modeloHuesped.addRow(new Object[]{numeroDeHuesped,
+                            nombre,
+                            apellido,
+                            fechaNacimiento,
+                            nacionalidad,
+                            telefono,
+                            numeroDeReserva});
+
+                    }
+
+                }
+            }
+        }
+        catch (NullPointerException ex) {
+
+            System.out.println("No se encontró ningún huesped con un apellido como el indicado");
+            System.out.println(ex.getMessage());
+            System.out.println(ex.getStackTrace());
+
+        }
+
+            
+    }
+        
     
     private void borrarTodosLosHuespedes() {
         int rowCount = modeloHuesped.getRowCount();

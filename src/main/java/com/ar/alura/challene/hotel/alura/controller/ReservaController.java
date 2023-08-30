@@ -62,6 +62,12 @@ public class ReservaController {
                 
     }
     
+    public List<Reserva> buscarPorApellido(String apellidoHuesped) {
+        
+        return this.reservaDao.buscarPorApellido(apellidoHuesped);
+        
+    }
+    
     
     
 }
